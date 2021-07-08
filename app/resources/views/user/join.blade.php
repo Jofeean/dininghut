@@ -132,14 +132,28 @@
                                                                            placeholder="Enter password">
                                                                 </div>
                                                             </div>
-                                                            <div class="form-check form-check-inline form-group">
-                                                                <input class="form-check-input " type="checkbox"
-                                                                       name="remember">
-                                                                <label class="form-check-label"
-                                                                       for="inlineCheckbox1"
-                                                                       style="color: white">
-                                                                    Remember password?</label>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div
+                                                                        class="form-check form-check-inline form-group">
+                                                                        <input class="form-check-input " type="checkbox"
+                                                                               name="remember">
+                                                                        <label class="form-check-label popps"
+                                                                               for="inlineCheckbox1"
+                                                                               style="color: white">
+                                                                            Remember password?</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group d-flex justify-content-end">
+                                                                        <a href="#" class="popps" style="color: white"
+                                                                           data-bs-toggle="modal"
+                                                                           data-bs-target="#forgotPassword">
+                                                                            Forgot password?</a>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+
                                                             <br>
                                                             <button type="submit" class="btn hero-button btn-lg">
                                                                 Submit
@@ -252,6 +266,53 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="forgotPassword" data-backdrop="static" data-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title popps popps" id="staticBackdropLabel">Reset Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url("forgot_password") }}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <h4 for="exampleInputEmail1" class="popps">
+                                    Email</h4>
+                                <input type="email"
+                                       class="form-control popps form-control-lg"
+                                       name="email"
+                                       placeholder="Enter email">
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <h4 for="exampleInputEmail1" class="popps">
+                                    Password</h4>
+                                <input type="password"
+                                       class="form-control popps form-control-lg"
+                                       name="password"
+                                       placeholder="Enter password">
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <h4 for="exampleInputEmail1" class="popps">
+                                    Confirm Password</h4>
+                                <input type="password"
+                                       class="form-control popps form-control-lg"
+                                       name="confirm_password"
+                                       placeholder="Enter password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary popps" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary popps">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js')
@@ -274,6 +335,15 @@
         Swal.fire({
             title: "Yey! Registration is successful.",
             html: 'Please check your email for verification.',
+            icon: 'success',
+            confirmButtonText: 'Cool'
+        })
+        @endif
+
+        @if(session('reset') == "success")
+        Swal.fire({
+            title: "Yey! Password is successful reset.",
+            html: 'You can log in now with your new password now.',
             icon: 'success',
             confirmButtonText: 'Cool'
         })

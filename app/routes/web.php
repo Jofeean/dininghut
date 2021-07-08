@@ -49,6 +49,7 @@ Route::get('contact', function () {
 Route::view('user_email', "mails.user_verification");
 Route::get('user_verify/{code}/{email}', [UserController::class, "verification"]);
 Route::post('user/add', [UserController::class, "store"]);
+Route::post('forgot_password', [UserController::class, "forgot"]);
 
 
 Route::middleware("guest")->group(function () {
@@ -85,6 +86,8 @@ Route::middleware("auth:user")->group(function () {
         return view('user.update', $data);
     });
     Route::post('update/{id}', [UserController::class, "update"]);
+
+    Route::post('reset', [UserController::class, "reset"]);
 });
 
 

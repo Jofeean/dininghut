@@ -218,4 +218,33 @@ class UserController extends Controller
 
         return redirect()->back()->with('reset', 'success');
     }
+
+    public function forgot(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+            'confirm_password' => 'required|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user = User::where("email", $request->email)->first();
+
+        if (!$user) {
+            return redirect()->back()
+                ->withErrors(["Email not found"])
+                ->withInput();
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+
+        return redirect()->back()->with('reset', 'success');
+    }
 }

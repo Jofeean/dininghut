@@ -93,10 +93,18 @@
                                                 @csrf
 
                                                 <h3>Background</h3>
-                                                <img src="{{ url("images/".$image->content) }}" alt="background"
-                                                     style="max-width: 100%; max-height: 50vh">
                                                 <div class="form-group">
-                                                    <input type="file" name="image" accept="image/*">
+                                                    <div class="d-flex justify-content-center">
+                                                        <img src="{{ url("images/".$image->content) }}" alt="background"
+                                                             id="output" style="max-width: 100%; max-height: 50vh">
+                                                    </div>
+                                                    <br>
+                                                    <div class="custom-file">
+                                                        <input type="file" name="image" accept="image/*"
+                                                               class="custom-file-input" onchange="loadFile(event)">
+                                                        <label class="custom-file-label" for="exampleInputFile">Choose
+                                                            file</label>
+                                                    </div>
                                                 </div>
                                                 <button type="submit" class="btn btn-success">Save</button>
                                             </form>
@@ -142,6 +150,14 @@
     <script src="{{ url("froala/js/plugins/font_family.min.js")}}"></script>
 
     <script>
+        var loadFile = function (event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+
         new FroalaEditor('.froala', {
             imageUploadURL: '{{ url('admin/upload-img') }}',
             imageUploadParams: {

@@ -37,10 +37,10 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="{{ url("admin/admin") }}" class="brand-link">
+        <a href="{{ url("admin/admin") }}" class="brand-link"
+           style="">
             <img src="{{ url("images/logo.png") }}" alt="Logo" class="brand-image"
-                 style="opacity: .8">
-            <span class="brand-text font-weight-light">Cafe Garden</span>
+                 style="float: unset; margin-left: unset; margin-right: unset; max-height: unset; width: 100%">
         </a>
 
         <!-- Sidebar -->

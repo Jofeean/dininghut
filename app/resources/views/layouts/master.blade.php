@@ -70,7 +70,7 @@
         .hero-button:hover {
             color: white;
             background-color: rgba(229, 229, 229, 0.23);
-            border: white;
+            border-color: rgba(255, 255, 255, 0);
         }
 
         .landing {
@@ -168,7 +168,7 @@
 </head>
 <body>
 <nav class="navbar fixed-top navbar-dark navbar-expand-md">
-    <div class="container">
+    <div class="container" id="nav">
         <a class="navbar-brand" href="{{ url("/") }}">
             <img src="{{ url('images/logo.png') }}" alt="" height="80">
         </a>
@@ -192,6 +192,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('contact') }}">Contact</a>
                 </li>
+            </ul>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo01">
+            <ul class="navbar-nav">
+                @guest('user')
+                    <li class="nav-item dropdown">
+                        <a class="nav-link btn hero-button" href="{{ url('join') }}"><b>Login / Register</b></a>
+                    </li>
+                @endguest
                 @if (Auth::guard("user")->user())
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -219,6 +229,21 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ url("fontawesome/js/all.js") }}"></script>
 @yield("js")
+<script>
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            var scroll = $(window).scrollTop();
+            console.log(scroll)
+            if (scroll == 0) {
+                $(".fixed-top").css("background-color", "rgba(255,255,255,0)");
+            }
+            else if(scroll + "px" > $(".landing").css("height"))
+            {
+                $(".fixed-top").css("background-color", "rgba(0,0,0,0.62)");
+            }
+        })
+    })
+</script>
 <!-- Option 2: Separate Popper and Bootstrap JS -->
 <!--
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

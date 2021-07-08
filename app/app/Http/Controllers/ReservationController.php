@@ -72,9 +72,9 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'date' => 'required',
+            'date' => 'required|after_or_equal:today',
             'person' => 'required|numeric',
-            'time' => 'required',
+            'time' => 'required|after_or_equal:7:00 am|before_or_equal:8:30 pm',
         ]);
 
         if ($validator->fails()) {

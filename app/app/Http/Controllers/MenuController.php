@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use DataTables;
 use Validator;
+use Image;
 
 class MenuController extends Controller
 {
@@ -70,6 +71,9 @@ class MenuController extends Controller
         $validator = Validator::make($request->all(), [
             "dish" => 'required',
             "description" => 'required',
+            "price" => "required",
+            "stock" => "required",
+            "image" => "required|image",
         ]);
 
         if ($validator->fails()) {
@@ -77,9 +81,20 @@ class MenuController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        $filename = time() . '.' . $request->image->extension();
+        $fpath = 'images/thumbs/' . $filename;
+        Image::make($request->image)->save($fpath);
+
         $menu = new Menu();
+        $menu->image = $filename;
         $menu->dish = $request->dish;
         $menu->description = $request->description;
+        $menu->price = $request->price;
+        $menu->stock = $request->stock;
+        if ($request->is_recommended == "on") {
+            $menu->is_recommended = true;
+        }
         $menu->save();
         if ($request->tags) {
             foreach ($request->tags as $tag) {
@@ -120,10 +135,22 @@ class MenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            "dish" => 'required',
-            "description" => 'required',
-        ]);
+        if ($request->hasFile('image')) {
+            $validator = Validator::make($request->all(), [
+                "dish" => 'required',
+                "description" => 'required',
+                "price" => "required",
+                "stock" => "required",
+                "image" => "required|image",
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                "dish" => 'required',
+                "description" => 'required',
+                "price" => "required",
+                "stock" => "required"
+            ]);
+        }
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -131,8 +158,22 @@ class MenuController extends Controller
                 ->withInput();
         }
         $menu = Menu::find($id);
+
+        if ($request->hasFile('image')) {
+            $filename = time() . '.' . $request->image->extension();
+            $fpath = 'images/thumbs/' . $filename;
+            Image::make($request->image)->save($fpath);
+            $menu->image = $filename;
+        }
+
         $menu->dish = $request->dish;
         $menu->description = $request->description;
+        $menu->price = $request->price;
+        $menu->stock = $request->stock;
+
+        if ($request->is_recommended == "on") {
+            $menu->is_recommended = true;
+        }
         $menu->save();
 
         return redirect()->back()->with('success2', 'success');

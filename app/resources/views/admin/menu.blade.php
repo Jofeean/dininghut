@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ url("admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css") }}">
     <link rel="stylesheet" href="{{ url("admin-lte/plugins/select2/css/select2.min.css") }}">
     <link rel="stylesheet" href="{{ url("admin-lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css") }}">
+    <link rel="stylesheet" href="{{ url("admin-lte//plugins/icheck-bootstrap/icheck-bootstrap.min.css") }}">
 
     <style>
         .badge a {
@@ -52,9 +53,13 @@
                             <table id="menuList" class="table table-striped table-hover">
                                 <thead>
                                 <td>ID</td>
+                                <td>Image</td>
                                 <td>Dish</td>
                                 <td>Description</td>
                                 <td>Category</td>
+                                <td>Price</td>
+                                <td>Stocks</td>
+                                <td>Rocemmeded</td>
                                 <td>Created</td>
                                 <td>Last Update</td>
                                 <td>Actions</td>
@@ -159,9 +164,23 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url("admin/menu") }}" method="post">
+                <form action="{{ url("admin/menu") }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Thumbnail</label>
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                <img id="output" style="max-width: 100%; max-height: 50vh"
+                                     src="https://cdn.iconscout.com/icon/free/png-256/placeholder-47-861797.png">
+                            </div>
+                            <br>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" accept="image/*"
+                                       name="image" onchange="loadFile(event)">
+                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" name="dish">
@@ -169,6 +188,14 @@
                         <div class="form-group">
                             <label for="username">Description</label>
                             <textarea class="form-control" name="description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="number" class="form-control" name="price">
+                        </div>
+                        <div class="form-group">
+                            <label>Available Stock</label>
+                            <input type="number" class="form-control" name="stock">
                         </div>
                         <div class="form-group">
                             <label>Category</label>
@@ -179,6 +206,14 @@
                                         <option value="{{ $catergory->id }}">{{ $catergory->category }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="is_recommended" name="is_recommended">
+                                <label for="is_recommended">
+                                    Recommended
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -233,10 +268,24 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="editForm" method="post">
+                <form id="editForm" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Thumbnail</label>
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                <img id="edit2_image" style="max-width: 100%; max-height: 50vh"
+                                     src="https://cdn.iconscout.com/icon/free/png-256/placeholder-47-861797.png">
+                            </div>
+                            <br>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" accept="image/*"
+                                       name="image" onchange="loadFile1(event)">
+                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="edit2_dish" name="dish">
@@ -244,6 +293,22 @@
                         <div class="form-group">
                             <label for="username">Description</label>
                             <textarea class="form-control" id="edit2_description" name="description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="number" class="form-control" id="edit2_price" name="price">
+                        </div>
+                        <div class="form-group">
+                            <label>Available Stock</label>
+                            <input type="number" class="form-control" id="edit2_stock" name="stock">
+                        </div>
+                        <div class="form-group">
+                            <div class="d-inline">
+                                <input type="checkbox" id="edit2_is_recommended" name="is_recommended">
+                                <label for="is_recommended">
+                                    Recommended
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -269,12 +334,26 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
+                        <div class="d-flex justify-content-center">
+                            <img id="view_image" style="max-width: 100%; max-height: 50vh"
+                                 src="https://cdn.iconscout.com/icon/free/png-256/placeholder-47-861797.png">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="view_dish" disabled>
                     </div>
                     <div class="form-group">
                         <label for="username">Description</label>
                         <textarea class="form-control" id="view_description" disabled></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="number" class="form-control" id="view_price" name="price" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Available Stock</label>
+                        <input type="number" class="form-control" id="view_stock" name="stock" disabled>
                     </div>
                 </div>
             </div>
@@ -298,11 +377,27 @@
     <script src="{{ url("admin-lte/plugins/datatables-buttons/js/buttons.html5.min.js") }}"></script>
     <script src="{{ url("admin-lte/plugins/datatables-buttons/js/buttons.print.min.js") }}"></script>
     <script src="{{ url("admin-lte/plugins/datatables-buttons/js/buttons.colVis.min.js") }}"></script>
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{ url("plugins/icheck-bootstrap/icheck-bootstrap.min.css") }}">
     <!-- Select2 -->
     <script src="{{ url("admin-lte/plugins/select2/js/select2.full.min.js") }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        var loadFile = function (event) {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+        var loadFile1 = function (event) {
+            var output = document.getElementById('edit2_image');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
 
         $('.select2').select2({
 
@@ -358,6 +453,13 @@
                     data: 'id'
                 },
                 {
+                    data: 'image',
+                    render: (data) => {
+                        return '<img class="img-fluid img-thumbnail" src="{{ url('images/thumbs') }}/'
+                            + data + '">'
+                    }
+                },
+                {
                     data: 'dish'
                 },
                 {
@@ -367,14 +469,40 @@
                     data: 'tags',
                 },
                 {
-                    data: 'created_at',
+                    data: 'updated_at',
                     render: function (data) {
                         data = new Date(data)
                         return data.toDateString() + " <b>" + data.toLocaleTimeString() + "<b>"
                     }
                 },
                 {
-                    data: 'updated_at',
+                    data: 'price',
+                    render: (data) => {
+                        return '<h4><span class="badge  badge-lg badge-info">' + data + '</span></h4>'
+                    }
+                },
+                {
+                    data: 'stock',
+                    render: (data) => {
+                        if (data > 0) {
+                            return '<h4><span class="badge  badge-lg badge-success">' + data + '</span></h4>'
+                        } else {
+                            return '<h4><span class="badge  badge-lg badge-danger">' + data + '</span></h4>'
+                        }
+                    }
+                },
+                {
+                    data: 'is_recommended',
+                    render: (data) => {
+                        if (data == 1) {
+                            return '<h4><span class="badge  badge-lg badge-success">Yes</span></h4>'
+                        } else {
+                            return '<h4><span class="badge  badge-lg badge-danger">No</span></h4>'
+                        }
+                    }
+                },
+                {
+                    data: 'created_at',
                     render: function (data) {
                         data = new Date(data)
                         return data.toDateString() + " <b>" + data.toLocaleTimeString() + "<b>"
@@ -446,6 +574,14 @@
 
             $("#view_dish").val(data.dish)
             $("#view_description").val(data.description)
+            $("#view_price").val(data.price)
+            $("#view_stock").val(data.stock)
+
+            var output = document.getElementById('view_image')
+            output.src = "{{ url("images/thumbs") }}/" + data.image
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
 
             $("#viewMenuModal").modal("show")
         }
@@ -469,6 +605,14 @@
 
             $("#edit2_dish").val(data.dish)
             $("#edit2_description").val(data.description)
+            $("#edit2_price").val(data.price)
+            $("#edit2_stock").val(data.stock)
+            $("#edit2_is_recommended").prop("checked", data.is_recommended)
+            var output = document.getElementById('edit2_image')
+            output.src = "{{ url("images/thumbs") }}/" + data.image
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
 
             $("#editForm").attr("action", "{{ url("admin/menu") }}/" + data.id)
 
