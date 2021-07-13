@@ -22,39 +22,60 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-8 col-md-7">
-                    <div class="card card-primary">
-                        <div class="card-body">
-                            <table id="reservationList" class="table table-striped table-hover">
-                                <thead>
-                                <td>ID</td>
-                                <td>Booker</td>
-                                <td>Date & Time</td>
-                                <td>Attendees</td>
-                                <td>Status</td>
-                                <td>Actions</td>
-                                </thead>
-                                @isset($day)
-                                    <tfoot>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <th>Slots: <span id="slots"></span></th>
-                                    <td></td>
-                                    <td></td>
-                                    </tfoot>
-                                @endisset
-                            </table>
+
+                <div class="col-2 col-sm-3">
+                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist"
+                         aria-orientation="vertical">
+                        <a class="nav-link active" id="vert-tabs-calendar-tab" data-toggle="pill"
+                           href="#vert-tabs-calendar" role="tab" aria-controls="vert-tabs-calendar"
+                           aria-selected="true">Calendar</a>
+                        <a class="nav-link" id="vert-tabs-list-tab" data-toggle="pill"
+                           href="#vert-tabs-list" role="tab" aria-controls="vert-tabs-list"
+                           aria-selected="false">List</a>
+                    </div>
+                </div>
+
+                <div class="col-10 col-sm-9">
+                    <div class="tab-content" id="vert-tabs-tabContent">
+                        <div class="tab-pane fade show active" id="vert-tabs-calendar" role="tabpanel"
+                             aria-labelledby="vert-tabs-calendar-tab">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div id="calendar"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="vert-tabs-list" role="tabpanel"
+                             aria-labelledby="vert-tabs-list-tab">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <table id="reservationList" class="table table-striped table-hover">
+                                        <thead>
+                                        <td>ID</td>
+                                        <td>Booker</td>
+                                        <td>Date & Time</td>
+                                        <td>Attendees</td>
+                                        <td>Status</td>
+                                        <td>Actions</td>
+                                        </thead>
+                                        @isset($day)
+                                            <tfoot>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <th>Slots: <span id="slots"></span></th>
+                                            <td></td>
+                                            <td></td>
+                                            </tfoot>
+                                        @endisset
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-5">
-                    <div class="card card-primary">
-                        <div class="card-body">
-                            <div id="calendar"></div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

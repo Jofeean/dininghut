@@ -111,11 +111,13 @@ class AdminController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'username' => 'required|unique:admins,username',
+                'type' => 'required',
             ]);
         }
         if ($admin->username == $request->username) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
+                'type' => 'required',
                 'username' => 'required',
             ]);
         }
@@ -128,6 +130,7 @@ class AdminController extends Controller
 
         $admin->name = $request->name;
         $admin->username = $request->username;
+        $admin->type = $request->type;
         $admin->save();
 
 

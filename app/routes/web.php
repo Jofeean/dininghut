@@ -101,13 +101,6 @@ Route::middleware("guest")->prefix('admin')->group(function () {
 
 
 Route::middleware("auth:admin")->prefix("admin")->group(function () {
-    Route::resource('admin', AdminController::class);
-    Route::post('admin/reset', [AdminController::class, "reset"]);
-
-    Route::resource('user', UserController::class);
-    Route::post('user/reset', [UserController::class, "reset"]);
-
-
     Route::resource('menu', MenuController::class);
     Route::get('category', [TagsCategoryController::class, "index1"])->name("category.index");
     Route::post('category', [TagsCategoryController::class, "store1"])->name("category.store");
@@ -121,27 +114,32 @@ Route::middleware("auth:admin")->prefix("admin")->group(function () {
 
     Route::resource('reservation', ReservationController::class);
     Route::get('reservation/status/{id}/{status}', [ReservationController::class, "changeStatus"]);
-    Route::get('cms', [CMSController::class, "index"]);
 
+    Route::middleware("isSuperAdmin")->group(function () {
+        Route::resource('admin', AdminController::class);
+        Route::post('admin/reset', [AdminController::class, "reset"]);
 
-    Route::post('upload-img', [CMSController::class, "contentImage"]);
+        Route::resource('user', UserController::class);
+        Route::post('user/reset', [UserController::class, "reset"]);
+        Route::post('upload-img', [CMSController::class, "contentImage"]);
 
-    Route::get('delete-img/{file}', [CMSController::class, 'deleteContentImage']);
+        Route::get('delete-img/{file}', [CMSController::class, 'deleteContentImage']);
 
-    Route::post('content/update/{id}', [CMSController::class, "update"]);
+        Route::post('content/update/{id}', [CMSController::class, "update"]);
 
-    Route::post('content/update/image/{id}', [CMSController::class, "imageUpload"]);
+        Route::get('cms', [CMSController::class, "index"]);
+        Route::post('content/update/image/{id}', [CMSController::class, "imageUpload"]);
 
-    Route::get('audits', function (Illuminate\Http\Request $request) {
-        if ($request->ajax()) {
-            $data = \App\Models\Audit::all();
-            return DataTables::of($data)
-                ->smart()
-                ->toJson();
-        }
-        return view("admin.audits");
+        Route::get('audits', function (Illuminate\Http\Request $request) {
+            if ($request->ajax()) {
+                $data = \App\Models\Audit::all();
+                return DataTables::of($data)
+                    ->smart()
+                    ->toJson();
+            }
+            return view("admin.audits");
+        });
     });
-
 });
 
 

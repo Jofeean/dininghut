@@ -22,6 +22,7 @@
                             <td>ID</td>
                             <td>Name</td>
                             <td>Username</td>
+                            <td>Type</td>
                             <td>Created</td>
                             <td>Last Update</td>
                             <td>Actions</td>
@@ -101,6 +102,13 @@
                             <label for="username">Username</label>
                             <input type="text" class="form-control" name="username" id="edit_username"
                                    placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select class="form-control" name="type" id="edit_type">
+                                <option value="Admin">Admin</option>
+                                <option value="Maintainer">Maintainer</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -211,6 +219,19 @@
                     data: 'username'
                 },
                 {
+                    data: 'type',
+                    render: function (data) {
+                        var disp
+                        if (data == "Maintainer") {
+                            disp = "<span class='badge  badge-lg badge-warning'>" + data + "</span>"
+                        }
+                        if (data == "Admin") {
+                            disp = "<span class='badge  badge-lg badge-success'>" + data + "</span>"
+                        }
+                        return disp
+                    }
+                },
+                {
                     data: 'created_at',
                     render: function (data) {
                         data = new Date(data)
@@ -273,6 +294,7 @@
 
             $("#edit_name").val(data.name)
             $("#edit_username").val(data.username)
+            $("#edit_type").val(data.type).change()
             $("#editForm").attr("action", "{{ url("admin/admin") }}/" + data.id)
 
             $("#editAdminModal").modal("show")

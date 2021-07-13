@@ -55,66 +55,93 @@
             <!-- Sidebar Menu -->
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-
-                    <li class="nav-header">LISTS</li>
-                    <li class="nav-item">
-                        <a href="{{ url("admin/admin") }}" class="nav-link">
-                            <i class="nav-icon fas fa-user-lock"></i>
-                            <p>
-                                Administrators
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url("admin/user") }}" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>
-                                Users
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url("admin/menu") }}" class="nav-link">
-                            <i class="nav-icon fas fa-utensils"></i>
-                            <p>
-                                Menu
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-header">CMS</li>
-                    <li class="nav-item">
-                        <a href="{{ url("admin/cms") }}" class="nav-link">
-                            <i class="nav-icon fas fa-columns"></i>
-                            <p>
-                                Contents
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url("admin/reservation") }}" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-alt"></i>
-                            <p>
-                                Reservations
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-header">Others</li>
-                    <li class="nav-item">
-                        <a href="{{ url("admin/audits") }}" class="nav-link">
-                            <i class="nav-icon fas fa-user-cog"></i>
-                            <p>
-                                Audit Trail
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url("logout") }}" class="nav-link">
-                            <i class="nav-icon fas fa-sign-out-alt"></i>
-                            <p>
-                                Logout
-                            </p>
-                        </a>
-                    </li>
+                    @if (Auth::guard("admin")->user()->type == "Admin")
+                        <li class="nav-header">LISTS</li>
+                        <li class="nav-item">
+                            <a href="{{ url("admin/admin") }}" class="nav-link">
+                                <i class="nav-icon fas fa-user-lock"></i>
+                                <p>
+                                    Administrators
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url("admin/user") }}" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    Users
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url("admin/menu") }}" class="nav-link">
+                                <i class="nav-icon fas fa-utensils"></i>
+                                <p>
+                                    Menu
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">CMS</li>
+                        <li class="nav-item">
+                            <a href="{{ url("admin/cms") }}" class="nav-link">
+                                <i class="nav-icon fas fa-columns"></i>
+                                <p>
+                                    Contents
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url("admin/reservation") }}" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <p>
+                                    Reservations
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header">Others</li>
+                        <li class="nav-item">
+                            <a href="{{ url("admin/audits") }}" class="nav-link">
+                                <i class="nav-icon fas fa-user-cog"></i>
+                                <p>
+                                    Audit Trail
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url("logout") }}" class="nav-link">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>
+                                    Logout
+                                </p>
+                            </a>
+                        </li>
+                    @elseif(Auth::guard("admin")->user()->type == "Maintainer")
+                        <li class="nav-header">Admin</li>
+                        <li class="nav-item">
+                            <a href="{{ url("admin/menu") }}" class="nav-link">
+                                <i class="nav-icon fas fa-utensils"></i>
+                                <p>
+                                    Menu
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url("admin/reservation") }}" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <p>
+                                    Reservations
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url("logout") }}" class="nav-link">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>
+                                    Logout
+                                </p>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </nav>
         </div>
