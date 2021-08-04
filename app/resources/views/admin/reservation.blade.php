@@ -88,6 +88,7 @@
     <script src="{{ url("admin-lte/plugins/moment/moment.min.js") }}"></script>
     <script src="{{ url("admin-lte/plugins/fullcalendar/main.js") }}"></script>
 
+
     <script src="{{ url("admin-lte/plugins/datatables/jquery.dataTables.min.js") }}"></script>
     <script src="{{ url("admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js") }}"></script>
     <script src="{{ url("admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js") }}"></script>
@@ -97,6 +98,9 @@
     <script src="{{ url("admin-lte/plugins/jszip/jszip.min.js") }}"></script>
     <script src="{{ url("admin-lte/plugins/pdfmake/pdfmake.min.js") }}"></script>
     <script src="{{ url("admin-lte/plugins/pdfmake/vfs_fonts.js") }}"></script>
+    <script src="{{ url("admin-lte/plugins/datatables-buttons/js/buttons.html5.min.js") }}"></script>
+    <script src="{{ url("admin-lte/plugins/datatables-buttons/js/buttons.print.min.js") }}"></script>
+    <script src="{{ url("admin-lte/plugins/datatables-buttons/js/buttons.colVis.min.js") }}"></script>
     <script>
         slots = 0
         document.addEventListener('DOMContentLoaded', function () {
@@ -192,11 +196,11 @@
                     render: function (data, type, row, meta) {
                         string = ""
                         if (data == 0) {
-                            string = "<h5><span class='badge  badge-lg badge-secondary'>Unconfirmed</span></h5"
+                            string = "<h5><span class='badge  badge-lg badge-secondary'>Unconfirmed</span></h5>"
                         } else if (data == 1) {
-                            string = "<h5><span class='badge  badge-lg badge-success'>Confirmed</span></h5"
+                            string = "<h5><span class='badge  badge-lg badge-success'>Confirmed</span></h5>"
                         } else {
-                            string = "<h5><span class='badge  badge-lg badge-danger'>Denied</span></h5"
+                            string = "<h5><span class='badge  badge-lg badge-danger'>Denied</span></h5>"
                         }
                         return string
                     }
@@ -215,11 +219,14 @@
                 },
             ],
 
+            "dom": 'Bfrtip',
             "responsive": true, "lengthChange": false, "autoWidth": false,
             "paging": true,
             "searching": true,
             "ordering": true,
             "info": true,
+            "buttons": [
+                'pdf'],
             "fnDrawCallback": function (oSettings) {
                 if (slots < 200) {
                     $("#slots").html('<span class="badge badge-primary">' + slots + '/200</span>')
@@ -227,7 +234,7 @@
                 if (slots >= 200) {
                     $("#slots").html('<span class="badge badge-danger">' + slots + '/200</span>')
                 }
-            }
+            },
         })
 
         function conf(id, status) {

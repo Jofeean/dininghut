@@ -469,13 +469,6 @@
                     data: 'tags',
                 },
                 {
-                    data: 'updated_at',
-                    render: function (data) {
-                        data = new Date(data)
-                        return data.toDateString() + " <b>" + data.toLocaleTimeString() + "<b>"
-                    }
-                },
-                {
                     data: 'price',
                     render: (data) => {
                         return '<h4><span class="badge  badge-lg badge-info">' + data + '</span></h4>'
@@ -509,6 +502,13 @@
                     }
                 },
                 {
+                    data: 'updated_at',
+                    render: function (data) {
+                        data = new Date(data)
+                        return data.toDateString() + " <b>" + data.toLocaleTimeString() + "<b>"
+                    }
+                },
+                {
                     data: "id",
                     render: function (data, type, row, meta) {
                         return '<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">' +
@@ -530,7 +530,8 @@
             "searching": true,
             "ordering": true,
             "info": true,
-            "buttons": [{
+            "buttons": [
+                'pdf', {
                 text: '<i class="nav-icon fas fa-utensils"></i> Add Menu',
                 action: function (e, dt, node, config) {
                     $("#addMenuModal").modal("show")
